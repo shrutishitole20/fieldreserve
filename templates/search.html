@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title%}
+{% block title %}
 Search Result
 {% endblock %}
 
-{% block content%}
+{% block content %}
 
 <div class="hero_area">
 
@@ -15,9 +15,8 @@ Search Result
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
                     <a class="navbar-brand">
                         <span class="glow">
-                            Turf Near you
+                            Ground Near you
                         </span>
-
                     </a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -43,7 +42,7 @@ Search Result
                             </li>
                             {% if 'organizer' in dis.role %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'turf_reg' id %}">ADD TURF</a>
+                                <a class="nav-link" href="{% url 'ground_reg' id %}">ADD GROUND</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'tournament_reg' id %}">ADD TOURNAMENT</a>
@@ -84,8 +83,6 @@ Search Result
                                             <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
                      c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
                                         </g>
-                                    </g>
-                                    <g>
                                     </g>
                                     <g>
                                     </g>
@@ -156,35 +153,35 @@ Search Result
     <!-- Turf section -->
     <section class="food_section layout_padding-bottom" id="food_section layout_padding-bottom">
         <div class="container">
-            {%if msg%}
+            {% if msg %}
             <div class="btn-box">
                 <a href="#">
-                    {{msg}}
+                    {{ msg }}
                 </a>
             </div>
             {% endif %}
             <div class="filters-content text-center">
                 <div class="row grid">
-                    {% for i in reg_turf %}
+                    {% for ground in reg_ground %}
                     <div class="col-sm-6 col-lg-4 all pizza">
                         <div class="box">
                             <div>
                                 <div class="img-box">
-                                    <img src="{{i.turf_img.url}}" alt="" />
+                                    <img src="{{ ground.ndianTeam.url }}" alt="" />
                                 </div>
                                 <div class="detail-box">
                                     <h5>
-                                        {{i.turf_name}}
+                                        {{ ground.ground_name }}
                                     </h5>
                                     <p>
                                     </p>
                                     <div class="options">
                                         <h6>
-                                            {{i.turf_address}} <br>
-                                            {{i.turf_phone}}
+                                            {{ ground.ground_address }} <br>
+                                            {{ ground.ground_phone }}
                                         </h6>
                                         <form method="post">
-                                            <a href="{% url 'about' i.id %}">
+                                            <a href="{% url 'about' ground.id %}">
                                                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                     viewBox="0 0 456.029 456.029"
@@ -206,8 +203,7 @@ Search Result
                                                     </g>
                                                     <g>
                                                         <g>
-                                                            <path
-                                                                d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                                                            <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
                                c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
                                                         </g>
                                                     </g>
@@ -261,7 +257,7 @@ Search Result
                     </h2>
                 </div>
                 <div class="row grid">
-                    {% for i in reg_tournament %}
+                    {% for tournament in reg_tournament %}
                     <div class="col-sm-6 col-lg-4 ">
                         <div class="box">
                             <div class="img-box">
@@ -269,9 +265,9 @@ Search Result
                             </div>
                             <div class="detail-box">
                                 <h5>
-                                    {{i.Tournament_name}}
+                                    {{ tournament.tournament_name }}
                                 </h5>
-                                <a href="{% url 'tournament_about' i.id%}">
+                                <a href="{% url 'tournament_about' tournament.id %}">
                                     Register Now <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;"
@@ -326,8 +322,6 @@ Search Result
                                         </g>
                                         <g>
                                         </g>
-                                        <g>
-                                        </g>
                                     </svg>
                                 </a>
                             </div>
@@ -340,16 +334,16 @@ Search Result
     </section>
 
 </div>
-<!-- end Turf section -->
+<!-- end Ground section -->
 
 
 
 </div>
-<!-- Turf section -->
+<!-- Ground section -->
 
 
 
-<!-- end Turf section -->
+<!-- end Ground section -->
 
 
 

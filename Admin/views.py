@@ -108,27 +108,33 @@ def profile(request):
 
 def search(request):
     if request.method == 'POST':
-        data = request.POST.get('data')
+        data = request.POST.get('search')
+        if not data:
+            return render(request, 'search.html', {'msg': "Search term cannot be empty."})
+        
         msg = " "
-        reg_ground = GroundRegistration.objects.filter(ground_location = data, is_available = 1)
-        reg_tournament = Host_Tournament.objects.filter(Tournament_name = data, is_available = 1)
-        if GroundRegistration.objects.filter(ground_location = data, is_available = 1).exists():
-            reg_ground = GroundRegistration.objects.filter(ground_location = data, is_available = 1)
-        elif GroundRegistration.objects.filter(ground_name = data, is_available = 1).exists():
-            reg_ground = GroundRegistration.objects.filter(ground_name = data, is_available = 1)
-        elif Host_Tournament.objects.filter(Tournament_name = data, is_available = 1).exists():
-            reg_tournament = Host_Tournament.objects.filter(Tournament_name = data, is_available = 1)
+        reg_ground = GroundRegistration.objects.filter(ground_location__icontains=data, is_available=1)
+        reg_tournament = Host_Tournament.objects.filter(tournament_name__icontains=data, is_available=1)
+        
+        if GroundRegistration.objects.filter(ground_location__icontains=data, is_available=1).exists():
+            reg_ground = GroundRegistration.objects.filter(ground_location__icontains=data, is_available=1)
+        elif GroundRegistration.objects.filter(ground_name__icontains=data, is_available=1).exists():
+            reg_ground = GroundRegistration.objects.filter(ground_name__icontains(data), is_available=1)
+        elif Host_Tournament.objects.filter(tournament_name__icontains=data, is_available=1).exists():
+            reg_tournament = Host_Tournament.objects.filter(tournament_name__icontains=data, is_available=1)
         else:
             msg = " Result not found "
         
         if 'id' in request.session:
             user_id = request.session['id']
             request.session['id'] = user_id
-            dis = Registration.objects.get(id = user_id)
+            dis = Registration.objects.get(id=user_id)
             if msg == " ":
                 return render(request, 'search.html', {'id': user_id, 'dis': dis, 'reg_ground': reg_ground, 'reg_tournament': reg_tournament})
             else:
-                return render(request, 'search.html', {'id': user_id, 'dis': dis, 'reg_ground': reg_ground, 'reg_tournament': reg_tournament, 'msg': msg}) 
+                return render(request, 'search.html', {'id': user_id, 'dis': dis, 'reg_ground': reg_ground, 'reg_tournament': reg_tournament, 'msg': msg})
+    else:
+        return render(request, 'search.html', {})
 
 def cancel(request, id):
     userid = request.session['id']
