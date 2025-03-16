@@ -15,7 +15,7 @@ Profile
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
                     <a class="navbar-brand">
                         <span class="glow">
-                            Turf Near you
+                            Ground Near you
                         </span>
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -41,7 +41,7 @@ Profile
                             </li>
                             {% if 'organizer' in dis.role %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'turf_reg' id %}">ADD TURF</a>
+                                <a class="nav-link" href="{% url 'turf_reg' id %}">ADD GROUND</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'tournament_reg' id %}">ADD TOURNAMENT</a>
@@ -215,14 +215,14 @@ Profile
             <div class="container">
                 <div class="heading_container heading_center">
                     <h2 class="glow">
-                        Booked Turf
+                        Booked Ground
                     </h2>
                 </div>
                 <div class="row grid">
-                    {% for i in reg_turf %}
+                    {% for i in reg_ground %}
                     <div class="col-sm-6 col-lg-4 ">
                         <div class="box">
-                            {{i.Turf_name}}<br>
+                            {{i.Ground_name}}<br>
                             {{i.date}}<br>
                             {{i.start_time}}&nbsp;-&nbsp;{{i.end_time}}
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -230,7 +230,7 @@ Profile
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="detail-box">
-                                <a href="{% url 'about' i.turf_id%}">
+                                <a href="{% url 'about' i.ground_id%}">
                                     View<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;"
@@ -500,7 +500,7 @@ Profile
             <div class="container">
                 <div class="heading_container heading_center">
                     <h2 class="glow">
-                        Hosted Turf
+                        Hosted Ground
                     </h2>
                 </div>
                 <div class="filters-content text-center">
@@ -509,11 +509,11 @@ Profile
                             <div class="box">
                                 <div>
                                     <div class="img-box">
-                                        <img src="{{turf_details.turf_img.url}}" alt="" />
+                                        <img src="{{ground_details.ground_img.url}}" alt="" />
                                     </div>
                                     <div class="detail-box">
                                         <h5>
-                                            {{turf_details}}
+                                            {{ground_details}}
                                         </h5>
                                         <p>
                                         </p>
@@ -521,7 +521,7 @@ Profile
                                             <h6>
                                             </h6>
                                             <form method="post">
-                                                <a href="{% url 'about' turf_details.id %}">
+                                                <a href="{% url 'about' ground_details.id %}">
                                                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                         viewBox="0 0 456.029 456.029"
@@ -623,11 +623,11 @@ Profile
             <div class="container">
                 <div class="heading_container heading_center">
                     <h2 class="glow">
-                        Booking for Turf
+                        Booking for Ground
                     </h2>
                 </div>
                 <div class="row grid">
-                    {%for i in reg_turf%}
+                    {%for i in reg_ground%}
                     <div class="col-sm-6 col-lg-4 ">
                         <div class="box">
                             <div class="detail-box">

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from Admin.models import Registration
-from Organizer.models import GroundRegistration, Host_Tournament  # Corrected here
+from Organizer.models import GroundRegistration, Host_Tournament
 from Team.models import Tournament_Booking, Ground_Booking
 from django.views.decorators.cache import cache_control
 from django.db.models import Q
@@ -88,41 +88,38 @@ def tournament_about(request, id):
 
 def profile(request):
     user_id = request.session['id']
-    dis = Registration.objects.get(id = user_id)
+    dis = Registration.objects.get(id=user_id)
     if 'organizer' in dis.role:
-        ground_details = GroundRegistration.objects.get(uid = user_id, is_available = 1)
-        reg_tournament = Host_Tournament.objects.filter(uid = user_id, is_available = 1)
-        m = ground_details.id
-        book_tournament = Tournament_Booking.objects.filter(ground_id = m)
-        reg_ground = Ground_Booking.objects.filter(ground_id = ground_details.id, is_available = 1)
-        return render(request, 'profile.html', {'id': user_id, 'dis': dis, 'reg_tournament': reg_tournament, 'ground_details': ground_details, 'book_tournament': book_tournament, 'reg_ground': reg_ground})
+        ground_details = GroundRegistration.objects.get(uid=user_id,is_available=1)
+        reg_tournament=Host_Tournament.objects.filter(uid=user_id,is_available=1)
+        m=ground_details.id
+        book_tournament=Tournament_Booking.objects.filter(ground_id=m)
+        reg_ground=ground_Booking.objects.filter(ground_id=ground_details.id,is_available=1)
+        return render(request,'profile.html', {'id': user_id,'dis':dis,'reg_tournament':reg_tournament,'ground_details':ground_details,'book_tournament':book_tournament,'reg_ground':reg_ground})
     elif 'team' in dis.role:
-        reg_tournament = Host_Tournament.objects.filter(is_available = 1)
-        book_tournament = Tournament_Booking.objects.filter(uid = dis.id)
+        reg_tournament=Host_Tournament.objects.filter(is_available=1)
+        book_tournament=Tournament_Booking.objects.filter(uid=dis.id)
         result = []
         for i in book_tournament:
-            rt = Host_Tournament.objects.get(id = i.tid)
+            rt=Host_Tournament.objects.get(id=i.tid)
             result.append(rt)
-        reg_ground = Ground_Booking.objects.filter(uid = user_id)
-        return render(request, 'profile.html', {'id': user_id, 'dis': dis, 'book_tournament': book_tournament, 'reg_tournament': reg_tournament, 'result': result, 'reg_ground': reg_ground})
+        reg_ground=ground_Booking.objects.filter(uid=user_id)
+        return render(request,'profile.html', {'id': user_id,'dis':dis,'book_tournament':book_tournament,'reg_tournament':reg_tournament,'result':result,'reg_ground':reg_ground})
 
 def search(request):
     if request.method == 'POST':
-        data = request.POST.get('search')
-        if not data:
-            return render(request, 'search.html', {'msg': "Search term cannot be empty."})
-        
-        msg = " "
-        reg_ground = GroundRegistration.objects.filter(ground_location__icontains=data, is_available=1)
-        reg_tournament = Host_Tournament.objects.filter(tournament_name__icontains=data, is_available=1)
-        
-        if GroundRegistration.objects.filter(ground_location__icontains=data, is_available=1).exists():
-            reg_ground = GroundRegistration.objects.filter(ground_location__icontains=data, is_available=1)
-        elif GroundRegistration.objects.filter(ground_name__icontains=data, is_available=1).exists():
-            reg_ground = GroundRegistration.objects.filter(ground_name__icontains(data), is_available=1)
-        elif Host_Tournament.objects.filter(tournament_name__icontains=data, is_available=1).exists():
-            reg_tournament = Host_Tournament.objects.filter(tournament_name__icontains=data, is_available=1)
+        data = request.POST.get('data')
+        msg=" "
+        reg_ground = GroundRegistration.objects.filter(ground_location=data,is_available=1)
+        reg_tournament=Host_Tournament.objects.filter(Tournament_name=data,is_available=1)
+        if(GroundRegistration.objects.filter(ground_location=data,is_available=1)).exists():
+            reg_ground = GroundRegistration.objects.filter(ground_location=data,is_available=1)
+        elif(GroundRegistration.objects.filter(ground_name=data,is_available=1)).exists():
+            reg_ground = GroundRegistration.objects.filter(ground_name=data,is_available=1)
+        elif(Host_Tournament.objects.filter(Tournament_name=data,is_available=1)).exists():
+            reg_tournament=Host_Tournament.objects.filter(Tournament_name=data,is_available=1)
         else:
+
             msg = " Result not found "
         
         if 'id' in request.session:
@@ -130,11 +127,9 @@ def search(request):
             request.session['id'] = user_id
             dis = Registration.objects.get(id=user_id)
             if msg == " ":
-                return render(request, 'search.html', {'id': user_id, 'dis': dis, 'reg_ground': reg_ground, 'reg_tournament': reg_tournament})
+                return render(request, 'search.html',{'id': user_id,'dis':dis,'reg_ground': reg_ground,'reg_tournament':reg_tournament})
             else:
-                return render(request, 'search.html', {'id': user_id, 'dis': dis, 'reg_ground': reg_ground, 'reg_tournament': reg_tournament, 'msg': msg})
-    else:
-        return render(request, 'search.html', {})
+                return render(request, 'search.html',{'id': user_id,'dis':dis,'reg_ground': reg_ground,'reg_tournament':reg_tournament,'msg':msg}) 
 
 def cancel(request, id):
     userid = request.session['id']
