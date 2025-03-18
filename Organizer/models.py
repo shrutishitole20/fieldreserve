@@ -11,6 +11,7 @@ class GroundRegistration(models.Model):
     ground_feature = models.CharField(max_length=50, default='')
     ground_rate = models.CharField(max_length=50, default='')
     ground_img = models.ImageField(upload_to='images', default='')
+    ground_type = models.CharField(max_length=50, default='')  # Add this field
     is_available = models.BooleanField(default=True)
 
     def __str__(self):

@@ -94,7 +94,7 @@ def profile(request):
         reg_tournament=Host_Tournament.objects.filter(uid=user_id,is_available=1)
         m=ground_details.id
         book_tournament=Tournament_Booking.objects.filter(ground_id=m)
-        reg_ground=ground_Booking.objects.filter(ground_id=ground_details.id,is_available=1)
+        reg_ground=Ground_Booking.objects.filter(ground_id=ground_details.id,is_available=1)
         return render(request,'profile.html', {'id': user_id,'dis':dis,'reg_tournament':reg_tournament,'ground_details':ground_details,'book_tournament':book_tournament,'reg_ground':reg_ground})
     elif 'team' in dis.role:
         reg_tournament=Host_Tournament.objects.filter(is_available=1)
@@ -103,7 +103,7 @@ def profile(request):
         for i in book_tournament:
             rt=Host_Tournament.objects.get(id=i.tid)
             result.append(rt)
-        reg_ground=ground_Booking.objects.filter(uid=user_id)
+        reg_ground=Ground_Booking.objects.filter(uid=user_id)
         return render(request,'profile.html', {'id': user_id,'dis':dis,'book_tournament':book_tournament,'reg_tournament':reg_tournament,'result':result,'reg_ground':reg_ground})
 
 def search(request):

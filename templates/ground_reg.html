@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block title%} Booking {% endblock %} {% block
-content%}
+{% extends 'base.html' %} {% load static %} {% block title %} Ground
+Registration {% endblock %} {% block content %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,12 +19,11 @@ content%}
       });
     </script>
   </head>
-
   <body>
     <form
       class="signup-form"
       method="post"
-      action="{%url 'ground_reg' id %}"
+      action="{% url 'ground_reg' id %}"
       enctype="multipart/form-data"
     >
       <!-- form header -->
@@ -33,7 +32,6 @@ content%}
       </div>
 
       <!-- form body -->
-
       {% csrf_token %}
       <div class="form-body">
         <!-- Name & Location -->
@@ -73,7 +71,7 @@ content%}
             required="required"
           />
         </div>
-        <!-- Bio -->
+        <!-- Description -->
         <div class="form-group">
           <label for="description" class="label-title">Description</label>
           <textarea
@@ -88,56 +86,61 @@ content%}
         <div class="form-group left">
           <label class="label-title">Available Features *</label>
           <div>
-            <label
-              >&nbsp;&nbsp;<input
+            <label>
+              &nbsp;&nbsp;<input
                 type="checkbox"
                 value="Full Area"
                 id="Full Area"
                 name="features"
                 for="Full Area"
                 class="featchk"
-              />Full Area</label
-            >
-            <label
-              >&nbsp;&nbsp;<input
+              />
+              Full Area
+            </label>
+            <label>
+              &nbsp;&nbsp;<input
                 type="checkbox"
                 value="Half Area"
                 id="Half Area"
                 name="features"
                 for="Half Area"
                 class="featchk"
-              />Half Area</label
-            >
-            <label
-              >&nbsp;&nbsp;<input
+              />
+              Half Area
+            </label>
+            <label>
+              &nbsp;&nbsp;<input
                 type="checkbox"
                 value="Football Court"
                 id="Football Court"
                 name="features"
                 for="Football Court"
                 class="featchk"
-              />Football Court</label
-            >
-            <label
-              >&nbsp;&nbsp;<input
+              />
+              Football Court
+            </label>
+            <label>
+              &nbsp;&nbsp;<input
                 type="checkbox"
                 value="Cricket Ground"
                 id="Cricket Ground"
                 name="features"
                 for="Cricket Ground"
                 class="featchk"
-              />Cricket Ground</label
-            >
-            <label
-              >&nbsp;&nbsp;<input
+              />
+              Cricket Ground
+            </label>
+            <label>
+              &nbsp;&nbsp;<input
                 type="checkbox"
                 value="24x7"
                 id="24x7"
                 name="features"
                 for="24x7"
                 class="featchk"
-              />24x7</label
-            >
+              />
+              24x7
+            </label>
             <input type="hidden" name="feat" id="txtvalues" />
           </div>
         </div>
@@ -159,8 +162,7 @@ content%}
           />
           <span id="range-label" name="rate">₹ 600/-</span>
         </div>
-        <!-- Uploaded Picture
-                -->
+        <!-- Uploaded Picture -->
         <div class="horizontal-group">
           <div class="form-group left">
             <label for="choose-file" class="label-title">Upload Pictures</label>
@@ -173,7 +175,6 @@ content%}
         <button type="submit" class="btn">Register</button>
       </div>
     </form>
-
     <!-- Script for range input label -->
     <script>
       var rangeLabel = document.getElementById("range-label");
@@ -183,17 +184,14 @@ content%}
         rangeLabel.innerText = "₹ " + experience.value + "/-";
       }
     </script>
-
     <style>
       /*---------------------------------------*/
       /* Font */
       /*---------------------------------------*/
-
       @import url("https://fonts.googleapis.com/css?family=Roboto");
       /*---------------------------------------*/
       /* Register Form */
       /*---------------------------------------*/
-
       body {
         background: linear-gradient(
           to right,
@@ -202,7 +200,6 @@ content%}
           #78a7ba 99%
         );
       }
-
       .signup-form {
         font-family: "Roboto", sans-serif;
         width: 650px;
@@ -215,17 +212,14 @@ content%}
         );
         border-radius: 10px;
       }
-
       /*---------------------------------------*/
       /* Form Header */
       /*---------------------------------------*/
-
       .form-header {
         background-color: #eff0f1;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
       }
-
       .form-header h1 {
         font-size: 30px;
         text-align: center;
@@ -233,26 +227,21 @@ content%}
         padding: 20px 0;
         border-bottom: 1px solid #cccccc;
       }
-
       /*---------------------------------------*/
       /* Form Body */
       /*---------------------------------------*/
-
       .form-body {
         padding: 10px 40px;
         color: #666;
       }
-
       .form-group {
         margin-bottom: 20px;
       }
-
       .form-body .label-title {
         color: #1bba93;
         font-size: 17px;
         font-weight: bold;
       }
-
       .form-body .form-input {
         font-size: 17px;
         box-sizing: border-box;
@@ -267,23 +256,19 @@ content%}
         background: white;
         outline: none;
       }
-
       .horizontal-group .left {
         float: left;
         width: 49%;
       }
-
       .horizontal-group .right {
         float: right;
         width: 49%;
       }
-
       input[type="file"] {
         outline: none;
         cursor: pointer;
         font-size: 17px;
       }
-
       #range-label {
         width: 15%;
         padding: 5px;
@@ -294,15 +279,12 @@ content%}
         position: relative;
         top: -8px;
       }
-
       ::-webkit-input-placeholder {
         color: #d9d9d9;
       }
-
       /*---------------------------------------*/
       /* Form Footer */
       /*---------------------------------------*/
-
       .signup-form .form-footer {
         background-color: #eff0f1;
         border-bottom-left-radius: 10px;
@@ -312,7 +294,6 @@ content%}
         border-top: 1px solid #cccccc;
         clear: both;
       }
-
       .form-footer span {
         float: left;
         margin-top: 10px;
@@ -320,7 +301,6 @@ content%}
         font-style: italic;
         font-weight: thin;
       }
-
       .btn {
         display: inline-block;
         padding: 10px 20px;
@@ -331,7 +311,6 @@ content%}
         color: #bcf5e7;
         cursor: pointer;
       }
-
       .btn:hover {
         background-color: #169c7b;
         color: white;
