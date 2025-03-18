@@ -106,3 +106,6 @@ def index(request):
             'badminton_grounds': badminton_grounds,
             'tennis_grounds': tennis_grounds,
         })
+
+def success_view(request):
+    return render(request, 'success.html')

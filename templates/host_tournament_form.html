@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Basic -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Site Metas -->
+    <meta name="keywords" content="host, tournament, form" />
+    <meta name="description" content="Form to host a new tournament" />
+    <meta name="author" content="Your Name" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'images/favicon.png' %}"
+      type="image/x-icon"
+    />
+
+    <title>Host Tournament</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2 class="text-center">Host Tournament</h2>
+      <form method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.tournament_name.label_tag }} {{ form.tournament_name }}
+          <small class="form-text text-muted"
+            >{{ form.tournament_name.help_text }}</small
+          >
+        </div>
+        <div class="form-group">
+          {{ form.tournament_date.label_tag }} {{ form.tournament_date }}
+          <small class="form-text text-muted"
+            >{{ form.tournament_date.help_text }}</small
+          >
+        </div>
+        <div class="form-group">
+          {{ form.tournament_desc.label_tag }} {{ form.tournament_desc }}
+          <small class="form-text text-muted"
+            >{{ form.tournament_desc.help_text }}</small
+          >
+        </div>
+        <div class="form-group">
+          {{ form.tournament_rate.label_tag }} {{ form.tournament_rate }}
+          <small class="form-text text-muted"
+            >{{ form.tournament_rate.help_text }}</small
+          >
+        </div>
+        <div class="form-group">
+          {{ form.is_available.label_tag }} {{ form.is_available }}
+          <small class="form-text text-muted"
+            >{{ form.is_available.help_text }}</small
+          >
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
