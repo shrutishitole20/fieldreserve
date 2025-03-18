@@ -109,3 +109,6 @@ def index(request):
 
 def success_view(request):
     return render(request, 'success.html')
+
+def host_tournament_view(request):
+    return HttpResponse("Host Tournament View")

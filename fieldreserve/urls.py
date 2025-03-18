@@ -22,5 +22,5 @@ urlpatterns = [
     path('', include('Team.urls')),
     path('', include('Admin.urls')),
     path('', include('Organizer.urls')),
-      
+    path('', views.index, name='index'),
 ]

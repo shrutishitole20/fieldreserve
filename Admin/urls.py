@@ -1,7 +1,5 @@
-from django.urls import path
 from django.urls import path, include
 from .views import *
-
 
 urlpatterns = [
     path('', index, name='index'),
@@ -13,5 +11,6 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('search/', search, name='search'),
     path('cancel/<id>', cancel, name='cancel'),
-    path('ground_reg/', include('Organizer.urls'), name='ground_reg'),  # Updated this line
+    path('', include('Organizer.urls')),
+    path('ground_reg/', include('Organizer.urls'), name='ground_reg'),  
 ]
