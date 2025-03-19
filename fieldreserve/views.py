@@ -1,4 +1,13 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
-def index(request):
-    return HttpResponse("Hello, You're at the fieldreserve index.")
+@login_required
+def home(request):
+    user_name = request.user.username
+    context = {
+        'username': user_name,
+    }
+    return render(request, 'index.html', context)
+
+# Define the index view to use the same logic as home
+index = home
