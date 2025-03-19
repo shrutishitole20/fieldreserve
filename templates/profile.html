@@ -41,7 +41,7 @@ Profile
                             </li>
                             {% if 'organizer' in dis.role %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'turf_reg' id %}">ADD GROUND</a>
+                                <a class="nav-link" href="{% url 'ground_reg' id %}">ADD GROUND</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'tournament_reg' id %}">ADD TOURNAMENT</a>
@@ -509,7 +509,7 @@ Profile
                             <div class="box">
                                 <div>
                                     <div class="img-box">
-                                        <img src="{{ground_details.ground_img.url}}" alt="" />
+                                        <img src="{% static 'images/viratkohli.jpg' %}" class="img-fluid" alt="" />
                                     </div>
                                     <div class="detail-box">
                                         <h5>

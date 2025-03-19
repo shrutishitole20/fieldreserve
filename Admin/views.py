@@ -105,21 +105,19 @@ def profile(request):
             result.append(rt)
         reg_ground=Ground_Booking.objects.filter(uid=user_id)
         return render(request,'profile.html', {'id': user_id,'dis':dis,'book_tournament':book_tournament,'reg_tournament':reg_tournament,'result':result,'reg_ground':reg_ground})
-
 def search(request):
     if request.method == 'POST':
         data = request.POST.get('data')
         msg=" "
         reg_ground = GroundRegistration.objects.filter(ground_location=data,is_available=1)
-        reg_tournament=Host_Tournament.objects.filter(Tournament_name=data,is_available=1)
+        reg_tournament=Host_Tournament.objects.filter(tournament_name=data,is_available=1)
         if(GroundRegistration.objects.filter(ground_location=data,is_available=1)).exists():
             reg_ground = GroundRegistration.objects.filter(ground_location=data,is_available=1)
         elif(GroundRegistration.objects.filter(ground_name=data,is_available=1)).exists():
             reg_ground = GroundRegistration.objects.filter(ground_name=data,is_available=1)
-        elif(Host_Tournament.objects.filter(Tournament_name=data,is_available=1)).exists():
-            reg_tournament=Host_Tournament.objects.filter(Tournament_name=data,is_available=1)
+        elif(Host_Tournament.objects.filter(tournament_name=data,is_available=1)).exists():
+            reg_tournament=Host_Tournament.objects.filter(tournament_name=data,is_available=1)
         else:
-
             msg = " Result not found "
         
         if 'id' in request.session:
