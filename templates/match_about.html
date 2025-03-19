@@ -52,7 +52,7 @@
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Tournament's</a>
+                <a class="nav-link" href="#">Match's</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">{{dis}}</a>
@@ -137,7 +137,7 @@
     <div class="container">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">{{reg_tournament.Tournament_name}}</h3>
+          <h3 class="card-title">{{reg_match.Match_name}}</h3>
           <div class="row">
             <div class="col-lg-5 col-md-5 col-sm-6">
               <div class="white-box text-center">
@@ -148,14 +148,11 @@
                 />
               </div>
             </div>
-            <form
-              method="post"
-              action="{% url 'tournament_booking' reg_tournament.id %}"
-            >
+            <form method="post" action="{% url 'match_booking' reg_match.id %}">
               {% csrf_token %}
               <div class="col-lg-7 col-md-7 col-sm-6">
                 <h5 class="box-title mt-2 font-weight-bold text-danger">
-                  Registration Fee : {{reg_tournament.Tournament_rate}}
+                  Registration Fee : {{reg_match.Match_rate}}
                 </h5>
                 <br />
                 <h5 class="box-title mt-2">
@@ -165,7 +162,7 @@
                   <b>Address : </b>{{reg_dis.user_email}}
                 </h5>
                 <h5 class="box-title mt-2">
-                  <b>Turnament Details : </b>{{reg_tournament.Tournament_desc}}
+                  <b>Match Details : </b>{{reg_match.Match_desc}}
                 </h5>
                 <br />
                 <h3 class="box-title mt-2 font-weight-bold">Ground Details</h3>

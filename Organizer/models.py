@@ -17,13 +17,13 @@ class GroundRegistration(models.Model):
     def __str__(self):
         return self.ground_name
 
-class Host_Tournament(models.Model):
+class Host_Match(models.Model):
     uid = models.CharField(max_length=100, default='')
-    tournament_name = models.CharField(max_length=100)
-    tournament_date = models.CharField(max_length=20, default='')
-    tournament_desc = models.CharField(max_length=750, default='')
-    tournament_rate = models.CharField(max_length=50, default='')
+    match_name = models.CharField(max_length=100)
+    match_date = models.CharField(max_length=20, default='')
+    match_desc = models.CharField(max_length=750, default='')
+    match_rate = models.CharField(max_length=50, default='')
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.tournament_name
+        return self.match_name

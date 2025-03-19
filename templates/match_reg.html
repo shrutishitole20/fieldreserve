@@ -21,14 +21,10 @@
   </head>
 
   <body>
-    <form
-      class="signup-form"
-      method="post"
-      action="{% url 'tournament_reg' id %}"
-    >
+    <form class="signup-form" method="post" action="{% url 'match_reg' id %}">
       <!-- form header -->
       <div class="form-header">
-        <h1>Tournament Register</h1>
+        <h1>Match Register</h1>
       </div>
 
       <!-- form body -->
@@ -37,25 +33,23 @@
         <!-- Name & Location -->
         <div class="horizontal-group">
           <div class="form-group left">
-            <label for="Tournamentname" class="label-title"
-              >Tournament Name *</label
-            >
+            <label for="Matchname" class="label-title">Match Name *</label>
             <input
               type="text"
-              id="tournamentname"
+              id="matchname"
               class="form-input"
-              name="tournamentname"
-              placeholder="enter tournament name"
+              name="matchname"
+              placeholder="enter match name"
               required="required"
             />
           </div>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <div class="form-group">
-            <label for="Tournamentdate">Tournament Date *</label>
+            <label for="Matchdate">Match Date *</label>
             <input
               type="date"
-              id="tournamentdate"
-              name="tournamentdate"
+              id="matchdate"
+              name="matchdate"
               required="required"
             />
           </div>
@@ -66,15 +60,14 @@
             class="form-input"
             rows="2"
             cols="30"
-            name="tournamentdescription"
+            name="matchdescription"
             style="height: auto"
           ></textarea>
         </div>
         <!-- Rate of Turf -->
         <br /><br />
         <div class="form-group left">
-          <label for="experience" class="label-title">Tournament Rate *</label
-          ><br />
+          <label for="experience" class="label-title">Match Rate *</label><br />
           <input
             type="range"
             min="600"
@@ -82,12 +75,12 @@
             step="9"
             value="0"
             id="experience"
-            name="tournamentrate"
+            name="matchrate"
             class="form-input"
             onChange="change();"
             style="height: 28px; width: 78%; padding: 0"
           />
-          <span id="range-label" name="tournamentrate">₹ 6000/-</span>
+          <span id="range-label" name="matchrate">₹ 6000/-</span>
         </div>
         <!-- Uploaded Picture-->
       </div>

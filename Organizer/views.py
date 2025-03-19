@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from Admin.models import Registration
 from django.http import HttpResponse
-from .models import GroundRegistration, Host_Tournament
+from .models import GroundRegistration, Host_Match
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
 import datetime
@@ -11,7 +11,7 @@ import datetime
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ground_reg(request, id):
     reg_ground = GroundRegistration.objects.all()
-    reg_tournament = Host_Tournament.objects.all()
+    reg_match = Host_Match.objects.all()
     dis = Registration.objects.get(id=id)
     user = dis.id
     userid = request.session['id']
@@ -42,37 +42,37 @@ def ground_reg(request, id):
     else:
         return render(request, 'ground_reg.html', {'id': userid, 'dis': dis})
 
-def tournament_reg(request, id):
+def match_reg(request, id):
     reg_ground = GroundRegistration.objects.filter(is_available=1)
-    reg_tournament = Host_Tournament.objects.filter(is_available=1)
+    reg_match = Host_Match.objects.filter(is_available=1)
     dis = Registration.objects.get(id=id)
     userid = request.session['id']
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     if request.method == 'POST':
-        tournamentname = request.POST.get('tournamentname')
-        tournamentdate = request.POST.get('tournamentdate')
-        tournamentdescription = request.POST.get('tournamentdescription')
-        tournamentrate = request.POST.get('tournamentrate')
-        if tournamentdate < today:
+        matchname = request.POST.get('matchname')
+        matchdate = request.POST.get('matchdate')
+        matchdescription = request.POST.get('matchdescription')
+        matchrate = request.POST.get('matchrate')
+        if matchdate < today:
             return HttpResponse('Select an Upcoming Date')
-        ob = Host_Tournament()
+        ob = Host_Match()
         ob.uid = userid
-        ob.tournament_name = tournamentname
-        ob.tournament_date = tournamentdate
-        ob.tournament_desc = tournamentdescription
-        ob.tournament_rate = tournamentrate
-        if Host_Tournament.objects.filter(tournament_name=tournamentname).exists():
-            return HttpResponse('Tournament name already exist!!')
+        ob.match_name = matchname
+        ob.match_date = matchdate
+        ob.match_desc = matchdescription
+        ob.match_rate = matchrate
+        if Host_Match.objects.filter(match_name=matchname).exists():
+            return HttpResponse('Match name already exist!!')
         ob.is_available = 1
         ob.save()
-        return render(request, 'index.html', {'reg_ground': reg_ground, 'id': userid, 'dis': dis, 'reg_tournament': reg_tournament})
+        return render(request, 'index.html', {'reg_ground': reg_ground, 'id': userid, 'dis': dis, 'reg_match': reg_match})
     else:
-        return render(request, 'tournament_reg.html', {'id': userid, 'dis': dis})
+        return render(request, 'match_reg.html', {'id': userid, 'dis': dis})
 
 def index(request):
     reg_ground = GroundRegistration.objects.filter(is_available=1)
     today = datetime.datetime.now().strftime('%Y-%m-%d')
-    reg_tournament = Host_Tournament.objects.filter(is_available=1)
+    reg_match = Host_Match.objects.filter(is_available=1)
 
     # Filter grounds by type
     football_grounds = GroundRegistration.objects.filter(ground_type='Football', is_available=1)
@@ -89,7 +89,7 @@ def index(request):
             'id': user_id,
             'dis': dis,
             'reg_ground': reg_ground,
-            'reg_tournament': reg_tournament,
+            'reg_match': reg_match,
             'football_grounds': football_grounds,
             'volleyball_grounds': volleyball_grounds,
             'cricket_grounds': cricket_grounds,
@@ -99,7 +99,7 @@ def index(request):
     else:
         return render(request, 'index.html', {
             'reg_ground': reg_ground,
-            'reg_tournament': reg_tournament,
+            'reg_match': reg_match,
             'football_grounds': football_grounds,
             'volleyball_grounds': volleyball_grounds,
             'cricket_grounds': cricket_grounds,
@@ -110,5 +110,5 @@ def index(request):
 def success_view(request):
     return render(request, 'success.html')
 
-def host_tournament_view(request):
-    return HttpResponse("Host Tournament View")
+def host_match_view(request):
+    return HttpResponse("Host Match View")

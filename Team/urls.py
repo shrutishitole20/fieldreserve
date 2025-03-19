@@ -4,7 +4,7 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('tournament_booking/<id>',tournament_booking,name='tournament_booking'),
+    path('match_booking/<id>',match_booking,name='match_booking'),
     path('ground_booking_details/<id>',ground_booking_details,name='ground_booking_details'),
     path('ground_booking/<id>',ground_booking,name='ground_booking'),
     path('rate/<id>',rate,name='rate'),

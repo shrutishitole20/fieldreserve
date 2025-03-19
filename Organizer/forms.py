@@ -1,12 +1,12 @@
 from django import forms
-from .models import GroundRegistration, Host_Tournament
+from .models import GroundRegistration, Host_Match
 
 class GroundRegistrationForm(forms.ModelForm):
     class Meta:
         model = GroundRegistration
         fields = ['ground_name', 'ground_location', 'ground_address', 'ground_desc', 'ground_feature', 'ground_rate', 'ground_img', 'ground_type', 'is_available']
 
-class HostTournamentForm(forms.ModelForm):
+class HostMatchForm(forms.ModelForm):
     class Meta:
-        model = Host_Tournament
-        fields = ['tournament_name', 'tournament_date', 'tournament_desc', 'tournament_rate', 'is_available']
+        model = Host_Match
+        fields = ['match_name', 'match_date', 'match_desc', 'match_rate', 'is_available']

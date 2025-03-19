@@ -35,7 +35,7 @@ Search Result
                                 <a class="nav-link" href="#about_section layout_padding">About</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#offer_section layout_padding-bottom">Tournament's</a>
+                                <a class="nav-link" href="#offer_section layout_padding-bottom">Match's</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">{{dis}}</a>
@@ -45,7 +45,7 @@ Search Result
                                 <a class="nav-link" href="{% url 'ground_reg' id %}">ADD GROUND</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'tournament_reg' id %}">ADD TOURNAMENT</a>
+                                <a class="nav-link" href="{% url 'match_reg' id %}">ADD Match</a>
                             </li>
                             {% endif %}
                             </li>
@@ -235,8 +235,6 @@ Search Result
                                                     </g>
                                                     <g>
                                                     </g>
-                                                    <g>
-                                                    </g>
                                                 </svg>
                                             </a>
                                         </form>
@@ -257,7 +255,7 @@ Search Result
                     </h2>
                 </div>
                 <div class="row grid">
-                    {% for tournament in reg_tournament %}
+                    {% for match in reg_match %}
                     <div class="col-sm-6 col-lg-4 ">
                         <div class="box">
                             <div class="img-box">
@@ -265,9 +263,9 @@ Search Result
                             </div>
                             <div class="detail-box">
                                 <h5>
-                                    {{ tournament.tournament_name }}
+                                    {{ match.match_name }}
                                 </h5>
-                                <a href="{% url 'tournament_about' tournament.id %}">
+                                <a href="{% url 'match_about' match.id %}">
                                     Register Now <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;"

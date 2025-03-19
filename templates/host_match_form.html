@@ -12,8 +12,8 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <!-- Site Metas -->
-    <meta name="keywords" content="host, tournament, form" />
-    <meta name="description" content="Form to host a new tournament" />
+    <meta name="keywords" content="host, match, form" />
+    <meta name="description" content="Form to host a new match" />
     <meta name="author" content="Your Name" />
     <link
       rel="shortcut icon"
@@ -21,7 +21,7 @@
       type="image/x-icon"
     />
 
-    <title>Host Tournament</title>
+    <title>Host Match</title>
 
     <!-- Bootstrap CSS -->
     <link
@@ -34,31 +34,31 @@
   </head>
   <body>
     <div class="container mt-5">
-      <h2 class="text-center">Host Tournament</h2>
+      <h2 class="text-center">Host Match</h2>
       <form method="post" enctype="multipart/form-data" class="mt-4">
         {% csrf_token %}
         <div class="form-group">
-          {{ form.tournament_name.label_tag }} {{ form.tournament_name }}
+          {{ form.match_name.label_tag }} {{ form.match_name }}
           <small class="form-text text-muted"
-            >{{ form.tournament_name.help_text }}</small
+            >{{ form.match_name.help_text }}</small
           >
         </div>
         <div class="form-group">
-          {{ form.tournament_date.label_tag }} {{ form.tournament_date }}
+          {{ form.match_date.label_tag }} {{ form.match_date }}
           <small class="form-text text-muted"
-            >{{ form.tournament_date.help_text }}</small
+            >{{ form.match_date.help_text }}</small
           >
         </div>
         <div class="form-group">
-          {{ form.tournament_desc.label_tag }} {{ form.tournament_desc }}
+          {{ form.match_desc.label_tag }} {{ form.match_desc }}
           <small class="form-text text-muted"
-            >{{ form.tournament_desc.help_text }}</small
+            >{{ form.match_desc.help_text }}</small
           >
         </div>
         <div class="form-group">
-          {{ form.tournament_rate.label_tag }} {{ form.tournament_rate }}
+          {{ form.match_rate.label_tag }} {{ form.match_rate }}
           <small class="form-text text-muted"
-            >{{ form.tournament_rate.help_text }}</small
+            >{{ form.match_rate.help_text }}</small
           >
         </div>
         <div class="form-group">

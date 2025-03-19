@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from Admin.models import Registration
-from Organizer.models import GroundRegistration, Host_Tournament
-from .models import Tournament_Booking, Ground_Booking, rating
+from Organizer.models import GroundRegistration, Host_Match
+from .models import Match_Booking, Ground_Booking, rating
 from hashlib import sha256
 from django.views.decorators.cache import cache_control
 from django.db.models import Q
@@ -11,24 +11,24 @@ import datetime
 
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def tournament_booking(request, id):
-    Tournament_details = Host_Tournament.objects.get(id=id)
-    m = Tournament_details.uid
+def match_booking(request, id):
+    Match_details = Host_Match.objects.get(id=id)
+    m = Match_details.uid
     user_id = request.session['id']
     dis = Registration.objects.get(id=user_id)
     reg = GroundRegistration.objects.get(uid=m)
     if request.method == 'POST':
-        ob = Tournament_Booking()
+        ob = Match_Booking()
         ob.uid = user_id
         ob.user_name = dis
-        ob.tid = Tournament_details.id
-        ob.Tournament_name = Tournament_details
+        ob.tid = Match_details.id
+        ob.Match_name = Match_details
         ob.ground_id = reg.id
-        if Tournament_Booking.objects.filter(uid=dis.id, tid=Tournament_details.id).exists():
-            return HttpResponse('Already Booked For This Tournament')
+        if Match_Booking.objects.filter(uid=dis.id, tid=Match_details.id).exists():
+            return HttpResponse('Already Booked For This Match')
         else:
             ob.save()
-            return HttpResponse('Tournament Booked')
+            return HttpResponse('Match Booked')
     else:
         return HttpResponse('Something went wrong!...')
 
