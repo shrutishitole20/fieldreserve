@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 
-class Tournament_Booking(models.Model):
+class Match_Booking(models.Model):
     uid = models.CharField(max_length=100, default='')
     user_name = models.CharField(max_length=100, default='')
     tid = models.CharField(max_length=100)
