@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+<div class="confirmation-container">
+  <div class="success-icon">✓</div>
+  <h2>Payment Successful!</h2>
+  <p>Your turf reservation has been confirmed.</p>
+
+  <div class="booking-details">
+    <h3>Booking Details:</h3>
+    <p>Booking ID: <span id="booking-id"></span></p>
+    <p>Date: <span id="booking-date"></span></p>
+    <p>Time: <span id="booking-time"></span></p>
+  </div>
+
+  <a href="{% url 'reservation_form' %}" class="btn btn-primary"
+    >Make Another Booking</a
+  >
+</div>
+{% endblock %}

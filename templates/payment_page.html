@@ -1,0 +1,84 @@
+{% extends 'base.html' %} {% block content %}
+<div class="payment-modal">
+  <div class="modal-header">
+    <a href="{% url 'reservation_form' %}" class="back-button">←</a>
+    <h2>TURFNAME</h2>
+    <button class="close-button">×</button>
+  </div>
+
+  <div class="payment-options">
+    <div class="upi-qr-section">
+      <h3>Pay With UPI QR</h3>
+      <div class="qr-code">
+        <img
+          src="https://chart.googleapis.com/chart?cht=qr&chl=upi://pay?pa=YOUR_UPI_ID@ybl&pn=TURFNAME&am={{ reservation_data.amount }}&cu=INR&tid={{ transaction_id }}&tr={{ transaction_id }}&tn=Turf%20Booking&mc=5812"
+          alt="UPI QR Code"
+          width="180"
+          height="180"
+        />
+      </div>
+      <p class="qr-expiry">QR Code is valid for 30 minutes</p>
+      <div class="upi-apps">
+        <img src="{% static 'images/gpay.png' %}" alt="Google Pay" />
+        <img src="{% static 'images/phonepe.png' %}" alt="PhonePe" />
+        <img src="{% static 'images/paytm.png' %}" alt="Paytm" />
+        <img src="{% static 'images/amazonpay.png' %}" alt="Amazon Pay" />
+      </div>
+    </div>
+
+    <div class="upi-id-section">
+      <h3>Pay With UPI ID/ Mobile Number</h3>
+      <div class="upi-id-input">
+        <img src="{% static 'images/bhim.png' %}" alt="BHIM UPI" />
+        <span>UPI ID/ Mobile Number</span>
+        <span class="info-icon">ⓘ</span>
+      </div>
+
+      <div class="mobile-input-container">
+        <input
+          type="text"
+          id="upi-mobile-input"
+          placeholder="Enter UPI ID/ Mobile Number"
+          value="{{ reservation_data.contact_number }}"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-footer">
+    <div class="amount-section">
+      <span>₹ {{ reservation_data.amount }}</span>
+      <a href="#" class="view-details">View Details</a>
+    </div>
+
+    <button id="pay-now-btn" class="pay-button">Pay Now</button>
+  </div>
+</div>
+
+<script>
+  document.getElementById("pay-now-btn").addEventListener("click", function () {
+    // In a real application, this would handle the UPI payment processing
+    // For now, we'll simulate a successful payment
+    fetch('{% url "verify_payment" %}', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      body: "payment_status=success",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          window.location.href = data.redirect_url;
+        } else {
+          alert("Payment failed: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred during payment processing");
+      });
+  });
+</script>
+{% endblock %}
