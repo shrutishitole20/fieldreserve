@@ -27,3 +27,12 @@ class Host_Match(models.Model):
 
     def __str__(self):
         return self.match_name
+class Reservation(models.Model):
+    full_name = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=15)
+    email = models.EmailField()
+    date = models.DateField()
+    time_slot = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.date} - {self.time_slot}"

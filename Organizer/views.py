@@ -8,6 +8,8 @@ import datetime
 import json
 import requests
 from django.conf import settings
+from .forms import GroundRegistrationForm
+
 
 # Create your views here.
 
@@ -109,6 +111,23 @@ def index(request):
             'badminton_grounds': badminton_grounds,
             'tennis_grounds': tennis_grounds,
         })
+
+def ground_registration(request):
+    if request.method == 'POST':
+        form = GroundRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            ground_name = form.cleaned_data.get('ground_name')
+            location = form.cleaned_data.get('ground_location')
+
+            # Check if the ground already exists
+            if GroundRegistration.objects.filter(ground_name=ground_name, ground_location=location).exists():
+                return HttpResponse('Ground already exist!!')
+            else:
+                form.save()
+                return HttpResponse('Ground registered successfully!')
+    else:
+        form = GroundRegistrationForm()
+    return render(request, 'ground_registration.html', {'form': form})
 
 def success_view(request):
     return render(request, 'success.html')

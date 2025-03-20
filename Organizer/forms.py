@@ -10,10 +10,3 @@ class HostMatchForm(forms.ModelForm):
     class Meta:
         model = Host_Match
         fields = ['match_name', 'match_date', 'match_desc', 'match_rate', 'is_available']
-class ReservationForm(forms.ModelForm):
-    class Meta:
-        model = Reservation
-        fields = ['full_name', 'contact_number', 'email', 'date', 'time_slot']
-        widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
-        }
