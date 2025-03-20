@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from Admin.models import Registration
 from Organizer.models import GroundRegistration, Host_Match
-from .models import Match_Booking, Ground_Booking, rating
+from .models import Match_Booking, Ground_Booking, Rating
 from hashlib import sha256
 from django.views.decorators.cache import cache_control
-from django.db.models import Q
 from django.contrib import messages
 import datetime
 
@@ -21,10 +20,10 @@ def match_booking(request, id):
         ob = Match_Booking()
         ob.uid = user_id
         ob.user_name = dis
-        ob.tid = Match_details.id
+        ob.mid = Match_details.id  # Use the correct field name 'mid'
         ob.Match_name = Match_details
         ob.ground_id = reg.id
-        if Match_Booking.objects.filter(uid=dis.id, tid=Match_details.id).exists():
+        if Match_Booking.objects.filter(uid=dis.id, mid=Match_details.id).exists():  # Use the correct field name 'mid'
             return HttpResponse('Already Booked For This Match')
         else:
             ob.save()
@@ -77,23 +76,34 @@ def ground_booking(request, id):
     else:
         return HttpResponse('Need To Login')
 
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from Admin.models import Registration
+from Organizer.models import GroundRegistration
+from .models import Rating
+from django.views.decorators.cache import cache_control
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def rate(request, id):
     ground_details = GroundRegistration.objects.get(id=id)
-    groundid = ground_details.id
     if 'id' in request.session:
         user_id = request.session['id']
         dis = Registration.objects.get(id=user_id)
         if request.method == 'POST':
-            ob = rating()
-            star = request.POST.get('rate')
-            ob.uid = user_id
-            ob.user_name = dis
-            ob.Ground_name = ground_details.ground_name
-            ob.ground_id = ground_details.id
-            ob.star = star
-            if rating.objects.filter(uid=user_id, ground_id=ground_details.id).exists():
-                rating.objects.filter(uid=user_id, ground_id=ground_details.id).update(star=star)
+            star = request.POST.get('star')
+            if not star:
+                return HttpResponse('Rating value is required', status=400)
+            ob = Rating(
+                uid=user_id,
+                user_name=dis,
+                Ground_name=ground_details.ground_name,
+                ground_id=ground_details.id,
+                star=star
+            )
+            if Rating.objects.filter(uid=user_id, ground_id=ground_details.id).exists():
+                Rating.objects.filter(uid=user_id, ground_id=ground_details.id).update(star=star)
                 return HttpResponse('Rating updated')
             ob.save()
             return HttpResponse('Rating given')
         return redirect('about')
+    return HttpResponse('User not logged in', status=401)

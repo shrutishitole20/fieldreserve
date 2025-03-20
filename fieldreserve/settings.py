@@ -133,3 +133,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Add your PhonePe, Google Pay, and Paytm API keys
+PHONEPE_MERCHANT_ID = os.getenv('PHONEPE_MERCHANT_ID', 'your_phonepe_merchant_id')
+PHONEPE_MERCHANT_KEY = os.getenv('PHONEPE_MERCHANT_KEY', 'your_phonepe_merchant_key')
+
+GOOGLE_PAY_MERCHANT_ID = os.getenv('GOOGLE_PAY_MERCHANT_ID', 'your_google_pay_merchant_id')
+GOOGLE_PAY_MERCHANT_KEY = os.getenv('GOOGLE_PAY_MERCHANT_KEY', 'your_google_pay_merchant_key')
+
+PAYTM_MERCHANT_ID = os.getenv('PAYTM_MERCHANT_ID', 'your_paytm_merchant_id')
+PAYTM_MERCHANT_KEY = os.getenv('PAYTM_MERCHANT_KEY', 'your_paytm_merchant_key')

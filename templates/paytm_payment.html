@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block title %}Paytm Payment{% endblock %} {% block
+content %}
+<div class="card mt-5">
+  <div class="card-header text-center">
+    <h2>Paytm Payment</h2>
+  </div>
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input
+          type="text"
+          id="amount"
+          name="amount"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Pay with Paytm</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="text-center mt-3">
+  <img
+    src="{% static 'images/paytm_logo.png' %}"
+    alt="Paytm Logo"
+    class="img-fluid"
+    width="200px"
+  />
+</div>
+{% endblock %}

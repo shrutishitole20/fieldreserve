@@ -90,21 +90,21 @@ def profile(request):
     user_id = request.session['id']
     dis = Registration.objects.get(id=user_id)
     if 'organizer' in dis.role:
-        ground_details = GroundRegistration.objects.get(uid=user_id,is_available=1)
-        reg_match=Host_Match.objects.filter(uid=user_id,is_available=1)
-        m=ground_details.id
-        book_match=Match_Booking.objects.filter(ground_id=m)
-        reg_ground=Ground_Booking.objects.filter(ground_id=ground_details.id,is_available=1)
-        return render(request,'profile.html', {'id': user_id,'dis':dis,'reg_match':reg_match,'ground_details':ground_details,'book_match':book_match,'reg_ground':reg_ground})
+        ground_details = GroundRegistration.objects.get(uid=user_id, is_available=1)
+        reg_match = Host_Match.objects.filter(uid=user_id, is_available=1)
+        m = ground_details.id
+        book_match = Match_Booking.objects.filter(ground_id=m)
+        reg_ground = Ground_Booking.objects.filter(ground_id=ground_details.id, is_available=1)
+        return render(request, 'profile.html', {'id': user_id, 'dis': dis, 'reg_match': reg_match, 'ground_details': ground_details, 'book_match': book_match, 'reg_ground': reg_ground})
     elif 'team' in dis.role:
-        reg_match=Host_Match.objects.filter(is_available=1)
-        book_match=Match_Booking.objects.filter(uid=dis.id)
+        reg_match = Host_Match.objects.filter(is_available=1)
+        book_match = Match_Booking.objects.filter(uid=dis.id)
         result = []
         for i in book_match:
-            rt=Host_Match.objects.get(id=i.tid)
+            rt = Host_Match.objects.get(id=i.mid)  # Use the correct field name 'mid'
             result.append(rt)
-        reg_ground=Ground_Booking.objects.filter(uid=user_id)
-        return render(request,'profile.html', {'id': user_id,'dis':dis,'book_match':book_match,'reg_match':reg_match,'result':result,'reg_ground':reg_ground})
+        reg_ground = Ground_Booking.objects.filter(uid=user_id)
+        return render(request, 'profile.html', {'id': user_id, 'dis': dis, 'book_match': book_match, 'reg_match': reg_match, 'result': result, 'reg_ground': reg_ground})
 def search(request):
     if request.method == 'POST':
         data = request.POST.get('data')

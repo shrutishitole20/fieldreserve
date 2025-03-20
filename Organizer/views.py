@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from Admin.models import Registration
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import GroundRegistration, Host_Match
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
 import datetime
+import json
+import requests
+from django.conf import settings
 
 # Create your views here.
 
@@ -112,3 +115,67 @@ def success_view(request):
 
 def host_match_view(request):
     return HttpResponse("Host Match View")
+
+# PhonePe Payment View
+def phonepe_payment(request):
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        phonepe_url = "https://api.phonepe.com/apis/pg/v1/pay"
+        headers = {
+            "Content-Type": "application/json",
+            "X-VERIFY": settings.PHONEPE_MERCHANT_KEY
+        }
+        payload = {
+            "merchantId": settings.PHONEPE_MERCHANT_ID,
+            "transactionId": "txn_12345",  # Generate a unique transaction ID
+            "amount": amount,
+            "merchantOrderId": "order_12345",  # Generate a unique order ID
+            "redirectUrl": "https://your-redirect-url.com",
+            "callbackUrl": "https://your-callback-url.com"
+        }
+        response = requests.post(phonepe_url, headers=headers, data=json.dumps(payload))
+        return JsonResponse(response.json())
+    return render(request, 'phonepe_payment.html')
+
+# Google Pay Payment View
+def googlepay_payment(request):
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        googlepay_url = "https://payments.googleapis.com/v1/payments"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {settings.GOOGLE_PAY_MERCHANT_KEY}"
+        }
+        payload = {
+            "merchantId": settings.GOOGLE_PAY_MERCHANT_ID,
+            "transactionId": "txn_12345",  # Generate a unique transaction ID
+            "amount": amount,
+            "currency": "INR",
+            "redirectUrl": "https://your-redirect-url.com",
+            "callbackUrl": "https://your-callback-url.com"
+        }
+        response = requests.post(googlepay_url, headers=headers, data=json.dumps(payload))
+        return JsonResponse(response.json())
+    return render(request, 'googlepay_payment.html')
+
+# Paytm Payment View
+def paytm_payment(request):
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        paytm_url = "https://securegw.paytm.in/theia/api/v1/initiateTransaction"
+        headers = {
+            "Content-Type": "application/json",
+            "mid": settings.PAYTM_MERCHANT_ID,
+            "key": settings.PAYTM_MERCHANT_KEY
+        }
+        payload = {
+            "requestType": "Payment",
+            "mid": settings.PAYTM_MERCHANT_ID,
+            "orderId": "order_12345",  # Generate a unique order ID
+            "amount": amount,
+            "currency": "INR",
+            "callbackUrl": "https://your-callback-url.com"
+        }
+        response = requests.post(paytm_url, headers=headers, data=json.dumps(payload))
+        return JsonResponse(response.json())
+    return render(request, 'paytm_payment.html')
