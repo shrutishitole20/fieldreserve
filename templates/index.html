@@ -1,10 +1,14 @@
-{% extends 'base.html' %} {% load static %} {% block title %} Home {% endblock%}
+```html name=index.html
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home {% endblock title %}
 {% block content %}
 
 <div class="hero_area">
   <div class="bg-box">
     <img src="{% static '/images/background.jpg' %}" />
   </div>
+  
   <!-- Welcome Message Section -->
   <div id="welcome-message">
     <h2>Welcome to FieldReserve, {{ username }}!</h2>
@@ -12,6 +16,16 @@
     <p>Limited availability, so book now to avoid disappointment.</p>
     <p>Reserve your spot easily.</p>
   </div>
+  
+  <!-- Display Messages -->
+  {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+  
   <section>
     <!-- header section starts -->
     <header class="header_section">
@@ -238,6 +252,39 @@
 <br /><br />
 <!-- Ground section -->
 <br /><br /><br />
+<section class="offer_section layout_padding-bottom">
+  <div class="offer_container">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2 class="glow">Grounds</h2>
+      </div>
+      <div class="row grid">
+        {% for ground in reg_ground %}
+        <div class="col-sm-6 col-lg-4">
+          <div class="box">
+            <div class="img-box">
+              <img
+                src="{{ ground.ground_img.url }}"
+                alt="{{ ground.ground_name }}"
+              />
+            </div>
+            <div class="detail-box">
+              <h5>{{ ground.ground_name }}</h5>
+              <p>{{ ground.ground_address }}</p>
+              <p>{{ ground.ground_desc }}</p>
+              <p>Rate: {{ ground.ground_rate }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end Ground section -->
+
+<br /><br /><br />
+
 <!-- about section -->
 
 <section class="about_section layout_padding" id="about_section layout_padding">
@@ -342,4 +389,5 @@
   }
 </style>
 
-{% endblock %}
+{% endblock content %}
+```

@@ -7,8 +7,11 @@ from django.contrib import messages
 import datetime
 import json
 import requests
+import hashlib
 from django.conf import settings
 from .forms import GroundRegistrationForm
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 # Create your views here.
@@ -20,6 +23,7 @@ def ground_reg(request, id):
     dis = Registration.objects.get(id=id)
     user = dis.id
     userid = request.session['id']
+    
     if request.method == 'POST':
         groundname = request.POST.get('groundname')
         location = request.POST.get('location')
@@ -28,21 +32,28 @@ def ground_reg(request, id):
         features = request.POST.get('feat')
         rate = request.POST.get('rate')
         img = request.FILES['image']
-        ob = GroundRegistration()
-        ob.uid = userid
-        ob.ground_name = groundname
-        ob.ground_location = location
-        ob.ground_address = address
-        ob.ground_desc = description
-        ob.ground_feature = features
-        ob.ground_rate = rate
-        ob.ground_img = img
+        
+        # Check for existing ground
         if GroundRegistration.objects.filter(uid=user).exists():
-            return HttpResponse('Ground already exist!!')
+            messages.error(request, 'Ground already exist!!')
+            return render(request, 'ground_reg.html', {'id': userid, 'dis': dis})
         if GroundRegistration.objects.filter(ground_name=groundname).exists():
-            return HttpResponse('Ground name already exist!!')
-        ob.is_available = 1
+            messages.error(request, 'Ground name already exist!!')
+            return render(request, 'ground_reg.html', {'id': userid, 'dis': dis})
+        
+        ob = GroundRegistration(
+            uid=userid,
+            ground_name=groundname,
+            ground_location=location,
+            ground_address=address,
+            ground_desc=description,
+            ground_feature=features,
+            ground_rate=rate,
+            ground_img=img,
+            is_available=1
+        )
         ob.save()
+        messages.success(request, 'Ground registered successfully!')
         return redirect('index')
     else:
         return render(request, 'ground_reg.html', {'id': userid, 'dis': dis})
@@ -53,26 +64,38 @@ def match_reg(request, id):
     dis = Registration.objects.get(id=id)
     userid = request.session['id']
     today = datetime.datetime.now().strftime('%Y-%m-%d')
+    
     if request.method == 'POST':
         matchname = request.POST.get('matchname')
         matchdate = request.POST.get('matchdate')
         matchdescription = request.POST.get('matchdescription')
         matchrate = request.POST.get('matchrate')
+        
+        # Check if the match date is in the future
         if matchdate < today:
-            return HttpResponse('Select an Upcoming Date')
-        ob = Host_Match()
-        ob.uid = userid
-        ob.match_name = matchname
-        ob.match_date = matchdate
-        ob.match_desc = matchdescription
-        ob.match_rate = matchrate
+            messages.error(request, 'Select an Upcoming Date')
+            return render(request, 'match_reg.html', {'id': userid, 'dis': dis, 'reg_ground': reg_ground, 'reg_match': reg_match})
+        
+        # Check if the match name already exists
         if Host_Match.objects.filter(match_name=matchname).exists():
-            return HttpResponse('Match name already exist!!')
-        ob.is_available = 1
+            messages.error(request, 'Match name already exists! Please choose a different name.')
+            return render(request, 'match_reg.html', {'id': userid, 'dis': dis, 'reg_ground': reg_ground, 'reg_match': reg_match})
+        
+        # Create new match
+        ob = Host_Match(
+            uid=userid,
+            match_name=matchname,
+            match_date=matchdate,
+            match_desc=matchdescription,
+            match_rate=matchrate,
+            is_available=1
+        )
         ob.save()
-        return render(request, 'index.html', {'reg_ground': reg_ground, 'id': userid, 'dis': dis, 'reg_match': reg_match})
-    else:
-        return render(request, 'match_reg.html', {'id': userid, 'dis': dis})
+        
+        messages.success(request, 'Match registered successfully!')
+        return redirect('index')
+    
+    return render(request, 'match_reg.html', {'id': userid, 'dis': dis, 'reg_ground': reg_ground, 'reg_match': reg_match})
 
 def index(request):
     reg_ground = GroundRegistration.objects.filter(is_available=1)
@@ -136,24 +159,39 @@ def host_match_view(request):
     return HttpResponse("Host Match View")
 
 # PhonePe Payment View
+@csrf_exempt
 def phonepe_payment(request):
     if request.method == 'POST':
         amount = request.POST.get('amount')
-        phonepe_url = "https://api.phonepe.com/apis/pg/v1/pay"
-        headers = {
-            "Content-Type": "application/json",
-            "X-VERIFY": settings.PHONEPE_MERCHANT_KEY
-        }
+        phonepe_url = "https://api.phonepe.com/apis/hermes/v1/checkout/initiate"
+        transaction_id = "txn_12345"  # Generate a unique transaction ID
+        order_id = "order_12345"  # Generate a unique order ID
+
         payload = {
             "merchantId": settings.PHONEPE_MERCHANT_ID,
-            "transactionId": "txn_12345",  # Generate a unique transaction ID
-            "amount": amount,
-            "merchantOrderId": "order_12345",  # Generate a unique order ID
+            "transactionId": transaction_id,
+            "amount": int(amount) * 100,  # Amount in paise
+            "merchantOrderId": order_id,
             "redirectUrl": "https://your-redirect-url.com",
-            "callbackUrl": "https://your-callback-url.com"
+            "callbackUrl": "https://your-callback-url.com",
+            "paymentModes": ["UPI"]
         }
-        response = requests.post(phonepe_url, headers=headers, data=json.dumps(payload))
+
+        # Convert payload to JSON string
+        payload_str = json.dumps(payload)
+
+        # Calculate X-VERIFY header
+        x_verify = hashlib.sha256((payload_str + "/apis/hermes/v1/checkout/initiate" + settings.PHONEPE_MERCHANT_KEY).encode()).hexdigest() + "###1"
+
+        headers = {
+            "Content-Type": "application/json",
+            "X-VERIFY": x_verify,
+            "X-MERCHANT-ID": settings.PHONEPE_MERCHANT_ID
+        }
+
+        response = requests.post(phonepe_url, headers=headers, data=payload_str)
         return JsonResponse(response.json())
+    
     return render(request, 'phonepe_payment.html')
 
 # Google Pay Payment View

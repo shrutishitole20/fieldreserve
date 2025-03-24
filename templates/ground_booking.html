@@ -1,5 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Payment
-Information{% endblock %} {% block content %}
+```html name=fieldreserve/templates/payment_page.html {% extends 'base.html' %}
+{% load static %} {% block title %}Payment Information{% endblock %} {% block
+content %}
 <div class="container">
   <h1>Payment Details</h1>
   <p><strong>Ground:</strong> {{ booking.Ground_name.ground_name }}</p>
@@ -28,12 +29,7 @@ Information{% endblock %} {% block content %}
   </form>
 
   <div class="qr-code">
-    <img
-      src="images/UPIQRCode.jpg"
-      alt="UPI QR Code"
-      width="180"
-      height="180"
-    />
+    <img src="'UPIQRCode.jpg'" alt="UPI QR Code" width="180" height="180" />
   </div>
   <p class="qr-expiry">QR Code is valid for 30 minutes</p>
   <div class="upi-apps">
@@ -46,4 +42,4 @@ Information{% endblock %} {% block content %}
 <div class="upi-id-section">
   <h3>Pay With UPI ID/ Mobile Number</h3>
 </div>
-{% endblock %}
+{% endblock %} ```

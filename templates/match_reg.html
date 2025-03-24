@@ -1,5 +1,8 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Booking
-{%endblock%} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Booking
+{% endblock %}
+{% block content %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -21,6 +24,15 @@
   </head>
 
   <body>
+    <!-- Display Messages -->
+    {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+    {% endif %}
+
     <form class="signup-form" method="post" action="{% url 'match_reg' id %}">
       <!-- form header -->
       <div class="form-header">
@@ -41,6 +53,7 @@
               name="matchname"
               placeholder="enter match name"
               required="required"
+              value="{{ request.POST.matchname }}"
             />
           </div>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -51,6 +64,7 @@
               id="matchdate"
               name="matchdate"
               required="required"
+              value="{{ request.POST.matchdate }}"
             />
           </div>
         </div>
@@ -62,7 +76,7 @@
             cols="30"
             name="matchdescription"
             style="height: auto"
-          ></textarea>
+          >{{ request.POST.matchdescription }}</textarea>
         </div>
         <!-- Rate of Turf -->
         <br /><br />
@@ -80,7 +94,7 @@
             onChange="change();"
             style="height: 28px; width: 78%; padding: 0"
           />
-          <span id="range-label" name="matchrate">₹ 6000/-</span>
+          <span id="range-label" name="matchrate">₹ {{ request.POST.matchrate }}/-</span>
         </div>
         <!-- Uploaded Picture-->
       </div>

@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 import datetime
 import uuid
+from django.conf import settings
 
 
 # Existing views...
@@ -76,7 +77,10 @@ def ground_booking(request, id):
             ob.end_time = et
             ob.is_available = 1
             ob.save()
-            return HttpResponse('Ground is Booked')
+            request.session['booking_id'] = ob.id
+            return redirect('payment_page')
+        else:
+            return render(request, 'ground_booking.html', {'ground_details': ground_details})
     else:
         return HttpResponse('Need To Login')
 
@@ -112,88 +116,12 @@ def reservation_form(request):
     form = ReservationForm()
     return render(request, 'reservation_form.html', {'form': form})
 
-@csrf_exempt
-def process_reservation(request):
-    """Process the reservation form and prepare payment details"""
-    if request.method == 'POST':
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            # Save reservation data temporarily but don't commit
-            reservation = form.save(commit=False)
-            
-            # Generate a unique transaction ID
-            transaction_id = str(uuid.uuid4())[:12]
-            request.session['transaction_id'] = transaction_id
-            
-            # Store form data in session for later use
-            request.session['reservation_data'] = {
-                'full_name': form.cleaned_data['full_name'],
-                'contact_number': form.cleaned_data['contact_number'],
-                'email': form.cleaned_data['email'],
-                'date': form.cleaned_data['date'].strftime('%d-%m-%Y'),
-                'time_slot': form.cleaned_data['time_slot'],
-                'amount': 4500,  # Set your amount here or calculate based on form data
-            }
-            
-            # Redirect to payment page
-            return redirect('payment_page')
-        else:
-            return render(request, 'reservation_form.html', {'form': form})
-    
-    return redirect('reservation_form')
-
 def payment_page(request):
-    """Display the payment options (UPI)"""
-    # Get reservation data from session
-    reservation_data = request.session.get('reservation_data', {})
-    
-    # Set payment expiration time (30 minutes from now)
-    expiry_time = (datetime.datetime.now() + datetime.timedelta(minutes=30)).strftime('%H:%M')
-    
-    context = {
-        'reservation_data': reservation_data,
-        'expiry_time': expiry_time,
-        'transaction_id': request.session.get('transaction_id', '')
-    }
-    
-    return render(request, 'payment_page.html', context)
-
-@csrf_exempt
-def verify_payment(request):
-    """Verify payment status and finalize the reservation"""
-    if request.method == 'POST':
-        payment_status = request.POST.get('payment_status')
-        transaction_id = request.session.get('transaction_id')
-        
-        if payment_status == 'success' and transaction_id:
-            # Get reservation data from session
-            reservation_data = request.session.get('reservation_data', {})
-            
-            # Create and save the reservation
-            reservation = Reservation(
-                full_name=reservation_data.get('full_name'),
-                contact_number=reservation_data.get('contact_number'),
-                email=reservation_data.get('email'),
-                date=datetime.datetime.strptime(reservation_data.get('date'), '%d-%m-%Y').date(),
-                time_slot=reservation_data.get('time_slot'),
-                transaction_id=transaction_id,
-                payment_status='Completed',
-                amount_paid=reservation_data.get('amount')
-            )
-            reservation.save()
-            
-            # Clear session data
-            if 'reservation_data' in request.session:
-                del request.session['reservation_data']
-            if 'transaction_id' in request.session:
-                del request.session['transaction_id']
-            
-            return JsonResponse({'status': 'success', 'redirect_url': '/confirmation/'})
-        
-        return JsonResponse({'status': 'failed', 'message': 'Payment verification failed'})
-    
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-def payment_confirmation(request):
-    """Display payment confirmation page"""
-    return render(request, 'confirmation.html')
+    if 'booking_id' in request.session:
+        booking_id = request.session['booking_id']
+        booking = Ground_Booking.objects.get(id=booking_id)
+        ground = GroundRegistration.objects.get(id=booking.ground_id)
+        amount = ground.ground_rate 
+        return render(request, 'payment_page.html', {'booking': booking, 'amount': amount})
+    else:
+        return HttpResponse('No booking found')
