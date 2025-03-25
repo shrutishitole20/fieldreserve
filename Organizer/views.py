@@ -12,8 +12,6 @@ from django.conf import settings
 from .forms import GroundRegistrationForm
 from django.views.decorators.csrf import csrf_exempt
 
-
-
 # Create your views here.
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -236,3 +234,9 @@ def paytm_payment(request):
         response = requests.post(paytm_url, headers=headers, data=json.dumps(payload))
         return JsonResponse(response.json())
     return render(request, 'paytm_payment.html')
+
+# Map View
+def map_view(request):
+    locations = GroundRegistration.objects.all()
+    location_data = [{'lat': loc.latitude, 'lng': loc.longitude, 'name': loc.name} for loc in locations]
+    return render(request, 'map.html', {'locations': location_data})

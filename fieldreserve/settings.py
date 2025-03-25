@@ -143,3 +143,8 @@ GOOGLE_PAY_MERCHANT_KEY = os.getenv('GOOGLE_PAY_MERCHANT_KEY', 'your_google_pay_
 
 PAYTM_MERCHANT_ID = os.getenv('PAYTM_MERCHANT_ID', 'your_paytm_merchant_id')
 PAYTM_MERCHANT_KEY = os.getenv('PAYTM_MERCHANT_KEY', 'your_paytm_merchant_key')
+
+# google maps api key
+
+GOOGLE_MAPS_API_KEY = 'AIzaSyB5H_nzXEWbSyqwBi86nelL6RoELvmcF4M'
+

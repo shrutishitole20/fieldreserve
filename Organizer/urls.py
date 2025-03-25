@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ground_registration, ground_reg, match_reg, index, success_view, host_match_view, phonepe_payment, googlepay_payment, paytm_payment
+from .views import ground_registration, ground_reg, match_reg, index, success_view, host_match_view, phonepe_payment, googlepay_payment, paytm_payment, map_view
 
 urlpatterns = [
     path('ground/register/', ground_registration, name='ground_registration'), 
@@ -11,4 +11,5 @@ urlpatterns = [
     path('phonepe-payment/', phonepe_payment, name='phonepe_payment'),
     path('googlepay-payment/', googlepay_payment, name='googlepay_payment'),
     path('paytm-payment/', paytm_payment, name='paytm_payment'),
+    path('map/', map_view, name='map_view'),
 ]

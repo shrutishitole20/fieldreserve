@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ground Locations</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5H_nzXEWbSyqwBi86nelL6RoELvmcF4M"></script>
+    <script>
+      function initMap() {
+          var mapOptions = {
+              zoom: 10,
+              center: {lat: -34.397, lng: 150.644} // Default center, adjust as needed
+          };
+          var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+          // Add markers for each location
+          var locations = {{ locations|safe }};
+          locations.forEach(function(location) {
+              var marker = new google.maps.Marker({
+                  position: {lat: location.lat, lng: location.lng},
+                  map: map,
+                  title: location.name
+              });
+          });
+      }
+    </script>
+  </head>
+  <body onload="initMap()">
+    <h1>Ground Locations</h1>
+    <div id="map" style="height: 500px; width: 100%"></div>
+  </body>
+</html>

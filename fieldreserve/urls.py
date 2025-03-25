@@ -8,5 +8,5 @@ urlpatterns = [
     path('', include('Admin.urls')),
     path('', include('Organizer.urls')),
     path('', views.index, name='index'),
-    path('home/', views.home, name='home'),  # Add this line
+    path('home/', views.home, name='home'), 
 ]
